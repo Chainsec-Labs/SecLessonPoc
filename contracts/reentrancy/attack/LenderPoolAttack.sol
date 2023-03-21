@@ -3,7 +3,6 @@
 pragma solidity ^0.8.1;
 import "./pool.sol";
 // @knowledgePoint 重入
-// @author 甘赞栩
 // @level 困难
 // @description 这是一个同时拥有swap和闪电贷的交易池，这个交易池有两个token，
 // 初始状态下，交易池各拥有100 * 10**18个token。想办法套空token0中Lenderpool的余额。
