@@ -20,8 +20,8 @@ contract King {
     }
 
     receive() external payable {
-        require(msg.value > prize || msg.sender == owner);
-        require(king.send(msg.value));
+        require(msg.value > prize || msg.sender == owner, "error1");
+        require(king.send(msg.value), "error2");
         king = msg.sender;
         prize = msg.value;
 
@@ -39,17 +39,24 @@ contract Check {
     uint public prize;
     //你的成绩
     uint256 public score;
+    address private owner;
+
+    modifier onlyWhitelist(){
+        require(msg.sender == owner || msg.sender == address(this));
+        _;
+    }
     constructor() public {
         king = new King();
         victim = address(king);
+        owner = msg.sender;
     }
 
     function getPriceNow() public {
         prize = king.prize();
     }
 
-    function check() public payable{
-        require(msg.value > king.prize());
+    function check() public onlyWhitelist payable{
+        require(msg.value > king.prize(), "ssss");
         victim.call.gas(1000000).value(msg.value)("");
     }
 
@@ -62,7 +69,7 @@ contract Check {
         if(king.nums() >= 1){
             score = 50;
             address kingbefore = king._king();
-            check();
+            this.check{value : msg.value}();
             address kingafter = king._king();
             //如果你成功使此竞拍系统宕机，100分
             if(kingbefore == kingafter){
@@ -77,3 +84,18 @@ contract Check {
     }
 
 }
+
+//你可以调用此合约的check函数验证你是否正确，之后可以回到check合约查询你的分数。
+contract ToCheck {
+    address  payable checkadr;
+    constructor(address payable _check) public {
+        checkadr = _check;
+    }
+    
+    //请确保msg.value足够进行一次竞拍。
+    function check() payable public {
+        Check(checkadr).isCompleted{value : msg.value}();
+    }
+}
+
+
