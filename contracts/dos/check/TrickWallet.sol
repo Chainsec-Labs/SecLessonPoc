@@ -47,8 +47,8 @@ contract TrickleWallet {
 contract Check {
     TrickleWallet public wallet;
     uint256 public score;
-    constructor(address _wallet) public {
-        wallet = TrickleWallet(_wallet);
+    constructor() public {
+        wallet = new TrickleWallet();
     }
 
     function isCompleted() public {
