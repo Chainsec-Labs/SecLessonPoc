@@ -2,21 +2,24 @@
 
 /// @level 简单
 /// @description 考点：1.owner。2.origin。
-
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.6.12;
 
 contract Wallet {
     address owner;
     uint256 public score;
+    bool private init;
 
     constructor() public payable{
-        require(address(this).balance >= 100);
         owner = address(this);
     }
 
     function beOwner() public {
         owner = msg.sender;
+    }
+
+    function initChallange() public payable{
+        require(msg.value == 100);
+        init = true;
     }
 
     function flashLoan(address payable target,uint256 amount,bytes memory data)public payable{
@@ -38,7 +41,7 @@ contract Wallet {
         if(tx.origin == owner){
             score += 25;
         }
-        if(msg.sender == address(this)){
+        if(msg.sender == address(this) && init){
             score += 75;
         }
     }
@@ -47,5 +50,4 @@ contract Wallet {
 
     }
 }
-
 
