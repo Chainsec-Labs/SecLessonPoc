@@ -3,7 +3,7 @@
 /// @level 困难
 /// @description 1.check合约余额大于0。2.disposal合约余额归零。
 //SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity 0.8.0;
 
 contract disposal {
     address public owner;
